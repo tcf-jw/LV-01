@@ -1,0 +1,80 @@
+<Canvas xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Width="256" Height="256" Background="Transparent">
+ <Canvas.Resources><LinearGradientBrush x:Key="Body" StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#F0EEE6" Offset="0"/><GradientStop Color="#A6AAA2" Offset="1"/></LinearGradientBrush><LinearGradientBrush x:Key="Key" StartPoint="0,0" EndPoint="0,1"><GradientStop Color="#505750" Offset="0"/><GradientStop Color="#252C27" Offset="1"/></LinearGradientBrush></Canvas.Resources>
+ <Border Canvas.Left="30" Canvas.Top="10" Width="196" Height="236" CornerRadius="5" Background="#696F65"><Border.Effect><DropShadowEffect BlurRadius="9" ShadowDepth="4" Opacity="0.4"/></Border.Effect></Border>
+ <Border Canvas.Left="30" Canvas.Top="7" Width="196" Height="235" CornerRadius="4" Background="{StaticResource Body}" BorderBrush="#F6F5ED" BorderThickness="1"/>
+ <Rectangle Canvas.Left="33" Canvas.Top="10" Width="190" Height="53" Fill="#EAE9E1"/>
+ <TextBlock Canvas.Left="41" Canvas.Top="14" Text="LV-01" FontFamily="Segoe UI Light" FontSize="24" Foreground="#323E35"/>
+ <Rectangle Canvas.Left="43" Canvas.Top="44" Width="32" Height="3" Fill="#EF6C27"/>
+ <Rectangle Canvas.Left="157" Canvas.Top="10" Width="65" Height="52" Fill="#93998D"/>
+<Ellipse Canvas.Left="162" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="169" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="176" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="183" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="190" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="197" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="204" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="211" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="218" Canvas.Top="16" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="162" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="169" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="176" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="183" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="190" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="197" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="204" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="211" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="218" Canvas.Top="23" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="162" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="169" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="176" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="183" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="190" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="197" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="204" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="211" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="218" Canvas.Top="30" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="162" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="169" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="176" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="183" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="190" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="197" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="204" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="211" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="218" Canvas.Top="37" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="162" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="169" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="176" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="183" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="190" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="197" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="204" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="211" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="218" Canvas.Top="44" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="162" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="169" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="176" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="183" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="190" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="197" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="204" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="211" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+<Ellipse Canvas.Left="218" Canvas.Top="51" Width="4.5" Height="4.5" Fill="#303B33"/>
+
+ <Rectangle Canvas.Left="32" Canvas.Top="65" Width="192" Height="72" Fill="#15211C"/>
+ <Rectangle Canvas.Left="40" Canvas.Top="72" Width="9" Height="4" Fill="#EF7F36"/>
+ <Rectangle Canvas.Left="197" Canvas.Top="124" Width="4" Height="6" Fill="#74BEB7"/><Rectangle Canvas.Left="204" Canvas.Top="120" Width="4" Height="10" Fill="#DB926C"/><Rectangle Canvas.Left="211" Canvas.Top="122" Width="4" Height="8" Fill="#AABC77"/>
+ <Path Data="M 89,85 L 127,85 127,90 141,90 141,81 148,81 148,78 152,78 152,83 168,83 168,79 172,79 172,86 177,86 177,101 173,101 173,109 145,109 145,104 137,104 137,120 131,120 131,107 98,107 98,120 92,120 92,104 86,104 86,91 80,91 79,100 76,100 78,88 89,88 Z" Fill="#E1E9CA"/>
+ <Path Data="M 97,85 L 110,85 110,92 116,92 116,99 102,99 102,94 97,94 Z M 124,98 L 135,98 135,107 124,107 Z M 146,87 L 154,87 154,94 146,94 Z" Fill="#22332A"/>
+ <Rectangle Canvas.Left="148" Canvas.Top="100" Width="28" Height="9" Fill="#E6A188"/><Rectangle Canvas.Left="152" Canvas.Top="103" Width="3" Height="3" Fill="#263B2D"/><Rectangle Canvas.Left="169" Canvas.Top="103" Width="3" Height="3" Fill="#263B2D"/><Rectangle Canvas.Left="166" Canvas.Top="89" Width="3" Height="3" Fill="#263B2D"/>
+ <Ellipse Canvas.Left="40" Canvas.Top="148" Width="27" Height="27" Fill="#777E70"/><Ellipse Canvas.Left="40" Canvas.Top="145" Width="27" Height="27" Fill="#EFF0E3" Stroke="#8B9585"/><Path Data="M 54,150 L 54,157" Stroke="#424D3C" StrokeThickness="2"/>
+ <Ellipse Canvas.Left="156" Canvas.Top="148" Width="24" Height="24" Fill="#89532A"/><Ellipse Canvas.Left="156" Canvas.Top="145" Width="24" Height="24" Fill="#FF7528"/><Path Data="M 168,149 L 168,155" Stroke="#FFF1D9" StrokeThickness="2"/>
+ <Ellipse Canvas.Left="192" Canvas.Top="148" Width="24" Height="24" Fill="#161E18"/><Ellipse Canvas.Left="192" Canvas.Top="145" Width="24" Height="24" Fill="#3E4941"/><Path Data="M 204,149 L 204,155" Stroke="#FFF1D9" StrokeThickness="2"/>
+ <Border Canvas.Left="84" Canvas.Top="151" Width="32" Height="43" CornerRadius="2" Background="#A94E20"/><Border Canvas.Left="84" Canvas.Top="147" Width="32" Height="43" CornerRadius="2" Background="#FA7629"/><Path Data="M 95,158 L 106,166 95,174 Z" Fill="#FFF0CC"/>
+ <Border Canvas.Left="124" Canvas.Top="164" Width="25" Height="29" CornerRadius="2" Background="#8A9484"/><Border Canvas.Left="124" Canvas.Top="161" Width="25" Height="28" CornerRadius="2" Background="#EBEDE2"/><Rectangle Canvas.Left="132" Canvas.Top="169" Width="9" Height="9" Fill="#344437"/>
+ <Border Canvas.Left="41" Canvas.Top="189" Width="23" Height="18" CornerRadius="2" Background="{StaticResource Key}"/>
+ <Border Canvas.Left="84" Canvas.Top="208" Width="29" Height="27" CornerRadius="2" Background="#161F19"/><Border Canvas.Left="84" Canvas.Top="204" Width="29" Height="27" CornerRadius="2" Background="{StaticResource Key}"/>
+ <Border Canvas.Left="123" Canvas.Top="208" Width="29" Height="27" CornerRadius="2" Background="#161F19"/><Border Canvas.Left="123" Canvas.Top="204" Width="29" Height="27" CornerRadius="2" Background="{StaticResource Key}"/>
+ <Border Canvas.Left="162" Canvas.Top="208" Width="29" Height="27" CornerRadius="2" Background="#161F19"/><Border Canvas.Left="162" Canvas.Top="204" Width="29" Height="27" CornerRadius="2" Background="{StaticResource Key}"/>
+ <Path Data="M 91,217 L 106,217 M 131,215 L 143,220 M 169,220 L 173,211 178,223 183,216" Stroke="#B7CEAC" StrokeThickness="1.5"/>
+</Canvas>

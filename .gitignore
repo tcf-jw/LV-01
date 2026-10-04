@@ -1,0 +1,6 @@
+build/
+dist/
+*.user
+*.log
+.lid-vibe*
+*.tmp

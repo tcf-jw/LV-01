@@ -1,0 +1,23 @@
+LV-01 / Windows x64 / v0.1.0
+
+Double-click LV-01.exe. Keep the app open; wait for AWAKE before closing the lid.
+The triangle starts Stay Awake; the square turns it off and pauses automatic starts.
+AC power and Wi-Fi are required. Unplugging or losing Wi-Fi restores normal Windows behavior.
+
+A/B/C select the cow, orbit or scope. The asterisk plays an effect.
+The three-line menu changes appearance. Hover controls or the circled i for help.
+
+This first release is unsigned. Windows may show an unknown-publisher warning.
+Download only from https://github.com/tcf-jw/LV-01/releases and compare SHA256SUMS.txt if needed.
+Managed computers may block the app or power-setting changes. No administrator rights are requested.
+
+The app uses Windows PowerShell 5.1 and .NET Framework included with supported Windows 11 systems.
+It unpacks its bundled code and stores preferences/recovery data in %LOCALAPPDATA%\LV-01.
+No sign-in, telemetry, network downloads, service or startup task.
+Close the app before deleting it. Keep recovery data until Windows settings have been restored.
+
+Shutdown in Windows before putting the laptop in a bag. Do not rely on a Wi-Fi dropout for bag safety.
+Physical closed-lid operation has not been verified on every laptop. Firmware and policy can affect it.
+
+Source, MIT license, behavior and build instructions: https://github.com/tcf-jw/LV-01
+Copyright (c) 2026 Joel Wu
