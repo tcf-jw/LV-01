@@ -11,10 +11,12 @@ Run these in Windows PowerShell 5.1 from the repository root:
 ./tests/test-lid-vibe-auto.ps1
 ./tests/test-lid-vibe-design.ps1
 ./tests/test-media.ps1
+./tests/test-volume.ps1
 ./build.ps1 -Test
 ```
 
 Power logic tests mock the OS boundaries. Never trigger real Sleep, Hibernate or Shut down as a test. Keep battery settings untouched, preserve the original AC policy, and keep recovery data until cleanup succeeds. Artwork and media controls must not change power state. Media tests must mock the input boundary so they never interrupt running players.
+Volume tests inject simulated readers and writers. Do not change the host's volume or mute during automated tests.
 
 Update the README or behavior documentation with changed behavior. Use a focused branch and a Conventional Commit. Public screenshots should use preview mode and should not contain personal data.
 

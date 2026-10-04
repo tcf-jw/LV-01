@@ -79,4 +79,6 @@
  <Path Data="M 91,217 L 106,217 M 131,215 L 143,220 M 169,220 L 173,211 178,223 183,216" Stroke="#B7CEAC" StrokeThickness="1.5"/>
  <Border Canvas.Left="156" Canvas.Top="183" Width="17" Height="13" Background="#EDEFE5"/><Border Canvas.Left="177" Canvas.Top="183" Width="19" Height="13" Background="#EDEFE5"/><Border Canvas.Left="200" Canvas.Top="183" Width="17" Height="13" Background="#EDEFE5"/>
  <Path Data="M 168,186 L 162,189 168,192 Z M 160,186 L 160,192 M 182,186 L 187,189 182,192 Z M 190,186 L 190,192 M 204,186 L 210,189 204,192 Z M 212,186 L 212,192" Fill="#344437" Stroke="#344437" StrokeThickness="1"/>
+ <Rectangle Canvas.Left="204" Canvas.Top="204" Width="3" Height="29" RadiusX="1" RadiusY="1" Fill="#28382D"/>
+ <Border Canvas.Left="199" Canvas.Top="218" Width="13" Height="6" CornerRadius="1" Background="#EDF0E5" BorderBrush="#8B9585" BorderThickness="0.5"><Rectangle Height="1" Margin="2,0" Fill="#C55D25"/></Border>
 </Canvas>

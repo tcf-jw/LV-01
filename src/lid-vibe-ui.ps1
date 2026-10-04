@@ -290,6 +290,7 @@ try {
     if ($script:saveTimer) { $script:saveTimer.Stop() }
     if ($script:helpTimer) { $script:helpTimer.Stop() }
     if ($script:artTimer) { $script:artTimer.Stop() }
+    if ($script:volumeTimer) { $script:volumeTimer.Stop() }
     if ($script:mediaTimer) { $script:mediaTimer.Stop() }
     if ($script:designReady -and $ownsPanel) { Save-DevicePreferences }
     if ($script:settingsWindow) { $script:settingsWindow.Close() }

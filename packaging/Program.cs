@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,8 +13,8 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("Joel Wu")]
 [assembly: AssemblyProduct("LV-01")]
 [assembly: AssemblyCopyright("Copyright (c) 2026 Joel Wu — MIT License")]
-[assembly: AssemblyVersion("0.2.0.0")]
-[assembly: AssemblyFileVersion("0.2.0.0")]
+[assembly: AssemblyVersion("0.3.0.0")]
+[assembly: AssemblyFileVersion("0.3.0.0")]
 internal static class Program {
     private static string Hash(byte[] bytes) {
         using (var sha=SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "").ToLowerInvariant();

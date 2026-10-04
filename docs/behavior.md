@@ -35,7 +35,18 @@ Battery lid actions, battery timers, screen timeout, power-button behavior, and 
 Use **Windows Shut down** before putting the laptop in a bag. Neither Wi-Fi nor charger state proves that the laptop is safe to pack.
 
 
-## Recovery files
+## Volume behavior
+
+The VOL fader uses Windows Core Audio's default render/console endpoint. It reads volume and mute every second and resolves the current endpoint for each gesture. Polling pauses during a drag so it cannot move the fader under the pointer. Startup, polling and exit never write volume or mute, and volume is not saved in LV-01 preferences. Only user input writes the master scalar; the existing mute setting stays unchanged. Failed reads or writes disable the fader and retry on the next poll. Audio failures do not change Stay Awake or pause automatic power handling.
+
+| State 1 | State 2 | Result |
+|---|---|---|
+| App closed | Open LV-01 | Reads Windows volume without changing it. |
+| Any power state | Move VOL | Changes default output volume; preserves mute. |
+| VOL visible | Keyboard volume or default output changes | Fader follows within about one second. |
+| Output available | Output disconnected | Fader dims; reconnecting restores it automatically. |
+
+## Power recovery files
 
 The executable stores these in `%LOCALAPPDATA%\LV-01`:
 

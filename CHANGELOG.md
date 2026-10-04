@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 — 2026-10-04
+
+- Added a physical-style VOL fader beneath the media keys, with keyboard and scroll controls.
+- The fader follows Windows main output volume and device changes. Mute stays unchanged.
+- Disconnected outputs disable the fader until audio becomes available again. Opening or closing the app never resets volume.
+- Added volume validation and WPF interaction checks using simulated audio devices; updated previews and the miniature icon.
+
 ## 0.2.0 — 2026-10-04
 
 - Added previous, play/pause and next media keys beneath the scene and tempo dials.

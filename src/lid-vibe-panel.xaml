@@ -67,6 +67,28 @@
     </ControlTemplate.Triggers>
    </ControlTemplate></Setter.Value></Setter>
   </Style>
+  <Style x:Key="Fader" TargetType="Slider">
+   <Setter Property="Orientation" Value="Vertical"/><Setter Property="Cursor" Value="SizeNS"/>
+   <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Slider">
+    <Grid Background="Transparent">
+     <Border Width="5" Margin="0,6" Background="#252A26" BorderBrush="{DynamicResource ShellEdge}" BorderThickness="1" CornerRadius="2"/>
+     <Path Data="M 2,7 L 7,7 M 2,21 L 7,21 M 2,35 L 7,35 M 2,49 L 7,49 M 2,63 L 7,63" Stroke="{DynamicResource MutedInk}" StrokeThickness="1"/>
+     <Track x:Name="PART_Track" Orientation="Vertical" IsDirectionReversed="False" Minimum="{TemplateBinding Minimum}" Maximum="{TemplateBinding Maximum}" Value="{TemplateBinding Value}">
+      <Track.Thumb><Thumb Width="23" Height="13"><Thumb.Template><ControlTemplate TargetType="Thumb">
+       <Border Background="{DynamicResource IvoryKey}" BorderBrush="{DynamicResource KeyRim}" BorderThickness="1" CornerRadius="2">
+        <Border.Effect><DropShadowEffect BlurRadius="4" ShadowDepth="2" Direction="270" Opacity="0.5"/></Border.Effect>
+        <Rectangle Height="2" Margin="3,0" Fill="{DynamicResource AccentInk}"/>
+       </Border>
+      </ControlTemplate></Thumb.Template></Thumb></Track.Thumb>
+     </Track>
+     <Border x:Name="FaderFocus" BorderBrush="{DynamicResource AccentInk}" BorderThickness="1" CornerRadius="3" Visibility="Collapsed"/>
+    </Grid>
+    <ControlTemplate.Triggers>
+     <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="FaderFocus" Property="Visibility" Value="Visible"/></Trigger>
+     <Trigger Property="IsEnabled" Value="False"><Setter Property="Opacity" Value="0.35"/></Trigger>
+    </ControlTemplate.Triggers>
+   </ControlTemplate></Setter.Value></Setter>
+  </Style>
   <Style x:Key="Dial" TargetType="Slider"><Setter Property="Foreground" Value="{DynamicResource Ink}"/>
    <Setter Property="Background" Value="{DynamicResource IvoryKey}"/><Setter Property="Width" Value="44"/><Setter Property="Height" Value="44"/><Setter Property="Cursor" Value="SizeNS"/>
    <Setter Property="Template"><Setter.Value><ControlTemplate TargetType="Slider">
@@ -192,7 +214,10 @@
       <Button x:Name="CowButton" Style="{StaticResource Pad}" Canvas.Left="83" Canvas.Top="157" AutomationProperties.Name="Pasture scene"><Path Data="M 3,4 L 0,0 6,2 8,0 8,4 M 19,4 L 22,0 16,2 14,0 14,4 M 4,4 L 18,4 18,17 4,17 Z M 4,11 L 18,11 M 8,7 L 8,9 M 14,7 L 14,9 M 8,14 L 8,15 M 14,14 L 14,15" Stroke="#CFDCCE" StrokeThickness="1.3"/></Button>
       <Button x:Name="OrbitButton" Style="{StaticResource Pad}" Canvas.Left="163" Canvas.Top="157" AutomationProperties.Name="Orbit scene"><Grid Width="27" Height="27"><Ellipse Stroke="#CFDCCE" Margin="4"/><Ellipse Stroke="#CFDCCE" Width="29" Height="9" RenderTransformOrigin="0.5,0.5"><Ellipse.RenderTransform><RotateTransform Angle="-30"/></Ellipse.RenderTransform></Ellipse><Ellipse Width="3" Height="3" Fill="#ECA77C"/></Grid></Button>
       <Button x:Name="WaveButton" Style="{StaticResource Pad}" Canvas.Left="243" Canvas.Top="157" AutomationProperties.Name="Scope scene"><Path Data="M 0,14 L 4,14 7,3 12,24 17,0 21,14 27,14" Stroke="#CFDCCE" StrokeThickness="1.4"/></Button>
-      <StackPanel Canvas.Left="320" Canvas.Top="158"><TextBlock Text="映像" FontFamily="Yu Gothic UI" FontSize="10" Foreground="{DynamicResource MutedInk}"/><TextBlock Text="PLAY" Style="{StaticResource Print}" Margin="0,5,0,0"/><TextBlock x:Name="SceneNumber" Text="01" FontFamily="Consolas" FontSize="21" Foreground="{DynamicResource AccentInk}" Margin="0,3,0,0"/></StackPanel>
+      <TextBlock x:Name="SceneNumber" Text="01" Visibility="Collapsed"/>
+      <TextBlock Text="VOL" Style="{StaticResource Print}" Canvas.Left="326" Canvas.Top="137"/>
+      <Slider x:Name="VolumeSlider" Style="{StaticResource Fader}" Canvas.Left="317" Canvas.Top="150" Width="43" Height="70" Minimum="0" Maximum="100" Value="0" SmallChange="2" LargeChange="10" IsMoveToPointEnabled="True" AutomationProperties.Name="Windows master output volume" AutomationProperties.HelpText="Drag or use arrow keys. Follows Windows volume; preserves mute."/>
+      <TextBlock x:Name="VolumeLabel" Text="--" FontFamily="Consolas" FontSize="8" Foreground="{DynamicResource MutedInk}" Width="43" TextAlignment="Center" Canvas.Left="317" Canvas.Top="222"/>
      </Canvas>
      <Grid Grid.Row="4" Margin="17,0,17,0"><TextBlock Text="LV—01   /   AWAKE INSTRUMENT" Style="{StaticResource Print}" FontSize="7" VerticalAlignment="Center"/><TextBlock Text="自動  •  2026" Style="{StaticResource Print}" FontSize="7" HorizontalAlignment="Right" VerticalAlignment="Center"/></Grid>
     </Grid>
@@ -205,7 +230,7 @@
     <TextBlock Text="▶  Stay Awake.  ■  Turn Off and pause auto." FontSize="11" Margin="0,0,0,6"/>
     <TextBlock Text="AC + Wi-Fi starts automatically in 5–10 seconds. Unplug or lose Wi-Fi: normal Windows behavior." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="A / B / C selects artwork. Turn SCENE or TEMPO; ✳ plays an effect. Ⅱ freezes only the artwork." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
-    <TextBlock Text="MEDIA keys: previous, play/pause, next. Windows chooses the player, as with keyboard media keys." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+    <TextBlock Text="MEDIA: previous, play/pause, next. Windows chooses the player. VOL sets main output volume; mute stays unchanged." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="Dials: drag, scroll or use arrow keys. Double-click resets. Minimize keeps running; close turns off." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,9"/>
     <TextBlock Text="Before packing: use Windows Shut down." FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap"/>
    </StackPanel>

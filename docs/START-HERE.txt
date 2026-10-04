@@ -1,4 +1,4 @@
-LV-01 / Windows x64 / v0.2.0
+LV-01 / Windows x64 / v0.3.0
 
 Double-click LV-01.exe. Keep the app open; wait for AWAKE before closing the lid.
 The triangle starts Stay Awake; the square turns it off and pauses automatic starts.
@@ -7,6 +7,8 @@ AC power and Wi-Fi are required. Unplugging or losing Wi-Fi restores normal Wind
 A/B/C select the cow, orbit or scope. The asterisk plays an effect.
 MEDIA keys control previous / play-pause / next in the player Windows selects.
 They work on battery too. Track/video skipping depends on the player; these are not seek buttons.
+VOL changes Windows main output volume. Drag, scroll or use arrow keys.
+It follows keyboard volume and output changes. MUTE means unmute in Windows; the fader preserves mute.
 The three-line menu changes appearance. Hover controls or the circled i for help.
 
 This first release is unsigned. Windows may show an unknown-publisher warning.

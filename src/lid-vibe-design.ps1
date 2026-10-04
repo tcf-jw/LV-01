@@ -5,6 +5,7 @@ $script:preferenceNote = 'Saved on this computer.'
 $script:pointerHint = ''; $script:focusHint = ''; $script:lastDetail = ''
 $script:helpPinned = $false; $script:lastDisplayKey = ''; $script:settingsWindow = $null
 $script:designReady = $false; $script:dialDrag = $null
+$script:volumeTimer=$null; $script:volumeSync=$false; $script:volumeAvailable=$false; $script:volumeMuted=$false
 $script:mediaNotice=''; $script:mediaTitle=''; $script:mediaTimer=$null
 $script:artFrozen=$false; $script:art=$null; $script:artTimer=$null
 
@@ -115,6 +116,7 @@ function Refresh-DeviceDisplay {
                 $title = 'STAY AWAKE'
                 $detail = if ($script:state -eq 'On') { 'Running on AC + Wi-Fi.' } elseif (-not $script:canStart) { 'Connect AC power and Wi-Fi first.' } else { 'Resume auto. Keep working with the lid closed.' }
             }
+            'Volume' { $title=if ($script:volumeAvailable) { 'VOLUME  {0:0}%' -f $window.FindName('VolumeSlider').Value } else { 'AUDIO UNAVAILABLE' }; $detail=if (-not $script:volumeAvailable) {'Connect an audio output. Retrying automatically.'} elseif ($script:volumeMuted) {'Muted in Windows. Moving VOL keeps mute on.'} else {'Windows main output. Drag or use arrow keys.'} }
             'MediaPrevious' { $title='PREVIOUS TRACK'; $detail='Windows chooses the player. Restart or go back a track.' }
             'MediaPlayPause' { $title='PLAY / PAUSE'; $detail='Toggle playback in the player selected by Windows.' }
             'MediaNext' { $title='NEXT TRACK'; $detail='Next track or video, if the player supports it.' }
@@ -152,7 +154,7 @@ function Refresh-DeviceDisplay {
 function Set-DeviceHint { param([string]$Hint) $script:pointerHint = $Hint; Refresh-DeviceDisplay }
 function Get-ControlHint {
     param([string]$Name)
-    switch ($Name) { 'OnButton' {'Awake'}; 'OnHoverSurface' {'Awake'}; 'OffButton' {'Off'}; 'OffHoverSurface' {'Off'}; 'GlowDial' {'Glow'}; 'TempoDial' {'Tempo'}; 'SceneDial' {'Scene'}; 'CowButton' {'Cow'}; 'OrbitButton' {'Orbit'}; 'WaveButton' {'Wave'}; 'FreezeButton' {'Freeze'}; 'BurstButton' {'Burst'}; 'MediaPreviousButton' {'MediaPrevious'}; 'MediaPlayPauseButton' {'MediaPlayPause'}; 'MediaNextButton' {'MediaNext'}; default {''} }
+    switch ($Name) { 'OnButton' {'Awake'}; 'OnHoverSurface' {'Awake'}; 'OffButton' {'Off'}; 'OffHoverSurface' {'Off'}; 'GlowDial' {'Glow'}; 'TempoDial' {'Tempo'}; 'SceneDial' {'Scene'}; 'CowButton' {'Cow'}; 'OrbitButton' {'Orbit'}; 'WaveButton' {'Wave'}; 'FreezeButton' {'Freeze'}; 'BurstButton' {'Burst'}; 'MediaPreviousButton' {'MediaPrevious'}; 'MediaPlayPauseButton' {'MediaPlayPause'}; 'MediaNextButton' {'MediaNext'}; 'VolumeSlider' {'Volume'}; default {''} }
 }
 
 function Set-HelpVisible {
@@ -242,12 +244,12 @@ function Initialize-DeviceDesign {
     $script:saveTimer.Interval = [timespan]::FromMilliseconds(400)
     $script:saveTimer.Add_Tick({ $script:saveTimer.Stop(); Save-DevicePreferences })
     Apply-DevicePalette
-    foreach ($name in @('OnHoverSurface','OffHoverSurface','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton','MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) {
+    foreach ($name in @('OnHoverSurface','OffHoverSurface','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton','MediaPreviousButton','MediaPlayPauseButton','MediaNextButton','VolumeSlider')) {
         $control = $window.FindName($name)
         $control.Add_MouseEnter({param($sender,$eventArgs) Set-DeviceHint (Get-ControlHint $sender.Name) })
         $control.Add_MouseLeave({param($sender,$eventArgs) if (-not $script:dialDrag) { Set-DeviceHint '' } })
     }
-    foreach ($name in @('OnButton','OffButton','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton','MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) {
+    foreach ($name in @('OnButton','OffButton','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton','MediaPreviousButton','MediaPlayPauseButton','MediaNextButton','VolumeSlider')) {
         $control = $window.FindName($name)
         $control.Add_GotKeyboardFocus({param($sender,$eventArgs) $script:focusHint=Get-ControlHint $sender.Name; Refresh-DeviceDisplay })
         $control.Add_LostKeyboardFocus({ $script:focusHint=''; Refresh-DeviceDisplay })
@@ -298,6 +300,7 @@ function Initialize-DeviceDesign {
     $window.Add_Deactivated({ $script:helpPinned=$false; Set-HelpVisible $false; $script:pointerHint=''; Refresh-DeviceDisplay })
     Initialize-DeviceArt
     Initialize-MediaKeys
+    Initialize-DeviceVolume
     $script:designReady = $true
 }
 
@@ -380,6 +383,7 @@ function Test-DeviceDesign {
         $script:preferences.Theme='Dark'; Apply-DevicePalette
         if ($window.Resources['IvoryKey'].GradientStops[0].Color.ToString() -ne '#FF69726B' -or $window.Resources['Grille'].Drawing.Children[0].Brush.Color.ToString() -ne '#FF171D19') { throw 'Dark key/grille material failed.' }
         Test-MediaButtons
+        Test-VolumeSlider
         $script:designChecksPassed=$true
         'Design interactions: OK (hover, warnings, guide, dials, keyboard, wheel, themes, accents, motion)'
     } finally {
@@ -524,4 +528,93 @@ function Test-MediaButtons {
     } finally {
         $script:mediaSender=$priorSender; Clear-MediaNotice; Set-VisualState $priorState $priorDetail
     }
+}
+
+function Sync-DeviceVolume {
+    $slider=$window.FindName('VolumeSlider')
+    if ($slider.IsMouseCaptureWithin) { return }
+    $script:volumeSync=$true
+    try {
+        $reading=& $script:volumeReader
+        $slider.Value=$reading.Percent
+        $script:volumeMuted=$reading.Muted
+        $script:volumeAvailable=$true; $slider.IsEnabled=$true
+        $window.FindName('VolumeLabel').Text=if ($reading.Muted) {'MUTE'} else {'{0:0}%' -f $reading.Percent}
+    } catch {
+        $script:volumeAvailable=$false; $slider.IsEnabled=$false
+        $window.FindName('VolumeLabel').Text='--'
+    } finally { $script:volumeSync=$false }
+    if ($script:pointerHint -eq 'Volume' -or $script:focusHint -eq 'Volume') { Refresh-DeviceDisplay }
+}
+
+function Initialize-DeviceVolume {
+    Add-Type -Path (Join-Path $PSScriptRoot 'lid-vibe-volume.cs')
+    $script:volumeReader=if ($isTest) { { [LV01.VolumeState]::new(42,$false) } } else { { [LV01.MasterVolume]::Read() } }
+    $script:volumeWriter=if ($isTest) { { param($Percent) $script:testVolumeWrites.Add($Percent) } } else { { param($Percent) [LV01.MasterVolume]::Set($Percent) } }
+    $script:testVolumeWrites=[Collections.Generic.List[double]]::new()
+    $slider=$window.FindName('VolumeSlider')
+    $slider.Add_ValueChanged({param($sender,$eventArgs)
+        if ($script:volumeSync -or -not $script:volumeAvailable) { return }
+        try {
+            & $script:volumeWriter $sender.Value
+            $window.FindName('VolumeLabel').Text=if ($script:volumeMuted) {'MUTE'} else {'{0:0}%' -f $sender.Value}
+            Refresh-DeviceDisplay
+        } catch {
+            $script:volumeAvailable=$false; $sender.IsEnabled=$false
+            $window.FindName('VolumeLabel').Text='--'
+            $script:mediaTitle='AUDIO UNAVAILABLE'; $script:mediaNotice='Volume change failed. Retrying the output connection.'
+            $script:mediaTimer.Stop(); $script:mediaTimer.Start(); Refresh-DeviceDisplay
+        }
+    })
+    $slider.Add_PreviewMouseWheel({param($sender,$eventArgs)
+        if ($sender.IsEnabled) { $sender.Value=[Math]::Max(0,[Math]::Min(100,$sender.Value+[Math]::Sign($eventArgs.Delta)*2)) }
+        $eventArgs.Handled=$true
+    })
+    Sync-DeviceVolume
+    $script:volumeTimer=[Windows.Threading.DispatcherTimer]::new()
+    $script:volumeTimer.Interval=[timespan]::FromSeconds(1)
+    $script:volumeTimer.Add_Tick({ Sync-DeviceVolume })
+    $script:volumeTimer.Start()
+}
+
+function Test-VolumeSlider {
+    if (-not $isTest) { throw 'Volume tests require smoke/preview mode.' }
+    $reader=$script:volumeReader; $writer=$script:volumeWriter
+    $priorState=$script:state; $priorDetail=$script:lastDetail; $paused=$script:autoPaused
+    $slider=$window.FindName('VolumeSlider')
+    try {
+        $script:testVolumeWrites.Clear()
+        Sync-DeviceVolume
+        if ($slider.Value -ne 42 -or $script:testVolumeWrites.Count -ne 0) { throw 'Initial read changed Windows volume.' }
+        $script:volumeReader={ [LV01.VolumeState]::new(73,$true) }; Sync-DeviceVolume
+        if ($slider.Value -ne 73 -or $window.FindName('VolumeLabel').Text -ne 'MUTE' -or $script:testVolumeWrites.Count) { throw 'External volume/mute sync failed.' }
+        $slider.Value=65
+        if ($script:testVolumeWrites.Count -ne 1 -or $script:testVolumeWrites[0] -ne 65 -or -not $script:volumeMuted) { throw 'Volume gesture failed or altered mute.' }
+        $key=[Windows.Input.KeyEventArgs]::new([Windows.Input.Keyboard]::PrimaryDevice,[Windows.PresentationSource]::FromVisual($window),0,[Windows.Input.Key]::Up)
+        $key.RoutedEvent=[Windows.Input.Keyboard]::KeyDownEvent; $slider.RaiseEvent($key)
+        if ($slider.Value -ne 67) { throw 'Volume keyboard direction/increment failed.' }
+        $slider.ApplyTemplate() | Out-Null
+        $track=$slider.Template.FindName('PART_Track',$slider)
+        $window.UpdateLayout()
+        $beforeDrag=$slider.Value
+        $drag=[Windows.Controls.Primitives.DragDeltaEventArgs]::new(0,-5)
+        $drag.RoutedEvent=[Windows.Controls.Primitives.Thumb]::DragDeltaEvent
+        $track.Thumb.RaiseEvent($drag)
+        if ($slider.Value -le $beforeDrag) { throw 'Dragging volume up did not increase it.' }
+        if ($track.ValueFromPoint([Windows.Point]::new(20,0)) -le $track.ValueFromPoint([Windows.Point]::new(20,70))) { throw 'Volume track click direction is reversed.' }
+        $script:volumeReader={ throw 'No output' }; Sync-DeviceVolume
+        if ($slider.IsEnabled -or $window.FindName('VolumeLabel').Text -ne '--') { throw 'Missing output was not handled.' }
+        $script:volumeReader={ [LV01.VolumeState]::new(18,$false) }; Sync-DeviceVolume
+        if (-not $slider.IsEnabled -or $slider.Value -ne 18) { throw 'New audio output did not recover.' }
+        $script:volumeWriter={param($Percent) throw 'Device lost during drag'}; $slider.Value=20
+        if ($slider.IsEnabled -or $script:mediaTitle -ne 'AUDIO UNAVAILABLE') { throw 'Volume write failure not reported.' }
+        Set-VisualState 'Warning' 'Recovery still pending'
+        Set-DeviceHint 'Volume'
+        if ($statusTitle.Text -ne 'CHECK SETTINGS') { throw 'Volume feedback hid power warning.' }
+        if ($script:autoPaused -ne $paused) { throw 'Volume changed automatic power behavior.' }
+    } finally {
+        $script:volumeReader=$reader; $script:volumeWriter=$writer
+        Sync-DeviceVolume; Clear-MediaNotice; Set-DeviceHint ''; Set-VisualState $priorState $priorDetail
+    }
+    'Volume interactions: OK (read-only sync, input, mute, device loss/recovery, warnings)'
 }
