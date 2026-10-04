@@ -45,7 +45,7 @@ Hover a control to see its meaning on the display. Keyboard focus works too. The
 
 Only the AC lid-close action is temporarily changed to **Do nothing**, together with a Windows idle-sleep prevention request. The previous AC setting is saved before changes and restored afterward. Battery lid actions and timers are never changed. Wi-Fi detection checks a connected interface with an IP address; it does not prove internet or VPN access.
 
-**Physical closed-lid operation is not yet verified on multiple laptops.** Modern Standby, firmware and organization policy can affect behavior. If the lid is already closed when a connection is lost, Windows may not receive another lid-close event, so immediate sleep is not guaranteed. See [all transitions and recovery behavior](docs/behavior.md).
+**Physical closed-lid operation remains unverified.** Modern Standby, firmware and organization policy can affect behavior. If the lid is already closed when a connection is lost, Windows may not receive another lid-close event, so immediate sleep is not guaranteed. See [all transitions and recovery behavior](docs/behavior.md).
 
 ## Privacy and local files
 

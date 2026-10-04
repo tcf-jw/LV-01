@@ -453,4 +453,3 @@ function Refresh-ArtKeys {
     }
     $window.FindName('FreezeButton').BorderBrush=if ($script:artFrozen) { $window.Resources['AccentInk'] } else { New-DeviceBrush '#141816' }
 }
-

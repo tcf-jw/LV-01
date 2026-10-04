@@ -76,4 +76,3 @@ public sealed class LidVibeArt : FrameworkElement {
         double cursor=5+(Phase*23)%158;Line(d,Mint,cursor,7,cursor,66,.6);
     }
 }
-

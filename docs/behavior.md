@@ -30,7 +30,7 @@
 | On | Panel or worker crashes | A surviving worker notices a missing panel; a surviving panel restores settings after its worker exits. If both terminate, reopen LV-01 to recover the saved AC setting. |
 | Starting or stopping | Windows denies a setting change | Shows a warning and blocks automatic retries. Click Stay Awake for a deliberate retry. Failed restoration keeps its recovery file so Turn Off can retry cleanup. |
 
-Battery lid actions, battery timers, screen timeout, power-button behavior, and critical-battery protection are never changed. Your previously configured AC lid action is restored rather than replaced with a fixed Sleep value. 
+Battery lid actions, battery timers, screen timeout, power-button behavior, and critical-battery protection are never changed. Your previously configured AC lid action is restored rather than replaced with a fixed Sleep value.
 
 Use **Windows Shut down** before putting the laptop in a bag. Neither Wi-Fi nor charger state proves that the laptop is safe to pack.
 

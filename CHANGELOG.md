@@ -11,4 +11,4 @@ First shareable Windows release of LV-01, previously developed as Lid Vibe.
 - Single Windows executable, miniature device icon, per-user settings and recovery files.
 - MIT license, source build, safe tests and Windows CI.
 
-Known limits: unsigned binary; Windows 11 x64 tested; physical closed-lid behavior varies by laptop and has not been validated across devices.
+Known limits: unsigned binary; Windows 11 x64 tested; physical lid-close and unplug tests remain unverified; behavior varies with hardware and policy.
