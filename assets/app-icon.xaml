@@ -77,4 +77,6 @@
  <Border Canvas.Left="123" Canvas.Top="208" Width="29" Height="27" CornerRadius="2" Background="#161F19"/><Border Canvas.Left="123" Canvas.Top="204" Width="29" Height="27" CornerRadius="2" Background="{StaticResource Key}"/>
  <Border Canvas.Left="162" Canvas.Top="208" Width="29" Height="27" CornerRadius="2" Background="#161F19"/><Border Canvas.Left="162" Canvas.Top="204" Width="29" Height="27" CornerRadius="2" Background="{StaticResource Key}"/>
  <Path Data="M 91,217 L 106,217 M 131,215 L 143,220 M 169,220 L 173,211 178,223 183,216" Stroke="#B7CEAC" StrokeThickness="1.5"/>
+ <Border Canvas.Left="156" Canvas.Top="183" Width="17" Height="13" Background="#EDEFE5"/><Border Canvas.Left="177" Canvas.Top="183" Width="19" Height="13" Background="#EDEFE5"/><Border Canvas.Left="200" Canvas.Top="183" Width="17" Height="13" Background="#EDEFE5"/>
+ <Path Data="M 168,186 L 162,189 168,192 Z M 160,186 L 160,192 M 182,186 L 187,189 182,192 Z M 190,186 L 190,192 M 204,186 L 210,189 204,192 Z M 212,186 L 212,192" Fill="#344437" Stroke="#344437" StrokeThickness="1"/>
 </Canvas>

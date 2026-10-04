@@ -5,6 +5,7 @@ $script:preferenceNote = 'Saved on this computer.'
 $script:pointerHint = ''; $script:focusHint = ''; $script:lastDetail = ''
 $script:helpPinned = $false; $script:lastDisplayKey = ''; $script:settingsWindow = $null
 $script:designReady = $false; $script:dialDrag = $null
+$script:mediaNotice=''; $script:mediaTitle=''; $script:mediaTimer=$null
 $script:artFrozen=$false; $script:art=$null; $script:artTimer=$null
 
 function Get-ValidatedPreferences {
@@ -105,6 +106,8 @@ function Refresh-DeviceDisplay {
     $title = ''; $detail = ''; $size = 15
     if ($script:state -eq 'Warning') {
         $title = 'CHECK SETTINGS'; $size = 14; $detail = $script:lastDetail
+    } elseif ($script:mediaNotice) {
+        $title=$script:mediaTitle; $detail=$script:mediaNotice; $size=14
     } elseif ($hint) {
         $size = 14
         switch ($hint) {
@@ -112,6 +115,9 @@ function Refresh-DeviceDisplay {
                 $title = 'STAY AWAKE'
                 $detail = if ($script:state -eq 'On') { 'Running on AC + Wi-Fi.' } elseif (-not $script:canStart) { 'Connect AC power and Wi-Fi first.' } else { 'Resume auto. Keep working with the lid closed.' }
             }
+            'MediaPrevious' { $title='PREVIOUS TRACK'; $detail='Windows chooses the player. Restart or go back a track.' }
+            'MediaPlayPause' { $title='PLAY / PAUSE'; $detail='Toggle playback in the player selected by Windows.' }
+            'MediaNext' { $title='NEXT TRACK'; $detail='Next track or video, if the player supports it.' }
             'Off' { $title='TURN OFF'; $detail='Pause auto. Restore Windows settings.' }
             'Glow' { $title = 'DISPLAY  {0:0}%' -f ($script:preferences.Brightness*100); $detail='Adjust this display. Laptop brightness stays unchanged.' }
             'Tempo' { $title = 'TEMPO  {0:0.0}x' -f $script:preferences.Tempo; $detail='Set the speed of the artwork and activity lights.' }
@@ -138,15 +144,15 @@ function Refresh-DeviceDisplay {
         $window.FindName('DisplayContent').BeginAnimation([Windows.UIElement]::OpacityProperty,$fade)
     }
     $script:lastDisplayKey = $key
-    $window.FindName('ArtStrip').Visibility = if ($script:state -eq 'Warning' -or $hint) { 'Collapsed' } else { 'Visible' }
-    $window.FindName('ModeLabel').Visibility = if ($hint -or $script:state -eq 'Warning') { 'Collapsed' } else { 'Visible' }
+    $window.FindName('ArtStrip').Visibility = if ($script:state -eq 'Warning' -or $hint -or $script:mediaNotice) { 'Collapsed' } else { 'Visible' }
+    $window.FindName('ModeLabel').Visibility = if ($hint -or $script:mediaNotice -or $script:state -eq 'Warning') { 'Collapsed' } else { 'Visible' }
     $window.FindName('ModeLabel').Text = if ($script:autoPaused) {'AUTO / PAUSED'} elseif ($script:autoFaulted) {'AUTO / CHECK'} else {'AUTO'}
 }
 
 function Set-DeviceHint { param([string]$Hint) $script:pointerHint = $Hint; Refresh-DeviceDisplay }
 function Get-ControlHint {
     param([string]$Name)
-    switch ($Name) { 'OnButton' {'Awake'}; 'OnHoverSurface' {'Awake'}; 'OffButton' {'Off'}; 'OffHoverSurface' {'Off'}; 'GlowDial' {'Glow'}; 'TempoDial' {'Tempo'}; 'SceneDial' {'Scene'}; 'CowButton' {'Cow'}; 'OrbitButton' {'Orbit'}; 'WaveButton' {'Wave'}; 'FreezeButton' {'Freeze'}; 'BurstButton' {'Burst'}; default {''} }
+    switch ($Name) { 'OnButton' {'Awake'}; 'OnHoverSurface' {'Awake'}; 'OffButton' {'Off'}; 'OffHoverSurface' {'Off'}; 'GlowDial' {'Glow'}; 'TempoDial' {'Tempo'}; 'SceneDial' {'Scene'}; 'CowButton' {'Cow'}; 'OrbitButton' {'Orbit'}; 'WaveButton' {'Wave'}; 'FreezeButton' {'Freeze'}; 'BurstButton' {'Burst'}; 'MediaPreviousButton' {'MediaPrevious'}; 'MediaPlayPauseButton' {'MediaPlayPause'}; 'MediaNextButton' {'MediaNext'}; default {''} }
 }
 
 function Set-HelpVisible {
@@ -236,12 +242,12 @@ function Initialize-DeviceDesign {
     $script:saveTimer.Interval = [timespan]::FromMilliseconds(400)
     $script:saveTimer.Add_Tick({ $script:saveTimer.Stop(); Save-DevicePreferences })
     Apply-DevicePalette
-    foreach ($name in @('OnHoverSurface','OffHoverSurface','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton')) {
+    foreach ($name in @('OnHoverSurface','OffHoverSurface','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton','MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) {
         $control = $window.FindName($name)
         $control.Add_MouseEnter({param($sender,$eventArgs) Set-DeviceHint (Get-ControlHint $sender.Name) })
         $control.Add_MouseLeave({param($sender,$eventArgs) if (-not $script:dialDrag) { Set-DeviceHint '' } })
     }
-    foreach ($name in @('OnButton','OffButton','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton')) {
+    foreach ($name in @('OnButton','OffButton','GlowDial','TempoDial','SceneDial','CowButton','OrbitButton','WaveButton','FreezeButton','BurstButton','MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) {
         $control = $window.FindName($name)
         $control.Add_GotKeyboardFocus({param($sender,$eventArgs) $script:focusHint=Get-ControlHint $sender.Name; Refresh-DeviceDisplay })
         $control.Add_LostKeyboardFocus({ $script:focusHint=''; Refresh-DeviceDisplay })
@@ -291,6 +297,7 @@ function Initialize-DeviceDesign {
     $window.FindName('SettingsButton').Add_Click({ $script:helpPinned=$false; Set-HelpVisible $false; Show-DeviceSettings })
     $window.Add_Deactivated({ $script:helpPinned=$false; Set-HelpVisible $false; $script:pointerHint=''; Refresh-DeviceDisplay })
     Initialize-DeviceArt
+    Initialize-MediaKeys
     $script:designReady = $true
 }
 
@@ -372,6 +379,7 @@ function Test-DeviceDesign {
         $window.WindowState='Normal'
         $script:preferences.Theme='Dark'; Apply-DevicePalette
         if ($window.Resources['IvoryKey'].GradientStops[0].Color.ToString() -ne '#FF69726B' -or $window.Resources['Grille'].Drawing.Children[0].Brush.Color.ToString() -ne '#FF171D19') { throw 'Dark key/grille material failed.' }
+        Test-MediaButtons
         $script:designChecksPassed=$true
         'Design interactions: OK (hover, warnings, guide, dials, keyboard, wheel, themes, accents, motion)'
     } finally {
@@ -452,4 +460,68 @@ function Refresh-ArtKeys {
         $window.FindName($pair[0]).BorderBrush=if ($pair[1] -eq $script:preferences.Scene) { $window.Resources['AccentInk'] } else { New-DeviceBrush '#141816' }
     }
     $window.FindName('FreezeButton').BorderBrush=if ($script:artFrozen) { $window.Resources['AccentInk'] } else { New-DeviceBrush '#141816' }
+}
+
+
+function Initialize-MediaKeys {
+    Add-Type -Path (Join-Path $PSScriptRoot 'lid-vibe-media.cs')
+    $script:mediaCommands=[Collections.Generic.List[string]]::new()
+    $script:mediaSender=if ($isTest) { { param($Action) $script:mediaCommands.Add([string]$Action) } } else { { param($Action) [LV01.MediaKeys]::Send($Action) } }
+    $script:mediaTimer=[Windows.Threading.DispatcherTimer]::new()
+    $script:mediaTimer.Interval=[timespan]::FromSeconds(2)
+    $script:mediaTimer.Add_Tick({ Clear-MediaNotice })
+    foreach ($name in @('MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) {
+        $window.FindName($name).Add_Click({ param($sender,$eventArgs)
+            $action=switch ($sender.Name) { 'MediaPreviousButton' {'Previous'}; 'MediaPlayPauseButton' {'PlayPause'}; 'MediaNextButton' {'Next'} }
+            Invoke-DeviceMedia $action
+        })
+    }
+}
+
+function Clear-MediaNotice {
+    $script:mediaTimer.Stop(); $script:mediaNotice=''; $script:mediaTitle=''
+    Refresh-DeviceDisplay
+}
+
+function Invoke-DeviceMedia {
+    param([ValidateSet('Previous','PlayPause','Next')][string]$Action)
+    $script:mediaTitle=switch ($Action) { 'Previous' {'PREVIOUS TRACK'}; 'PlayPause' {'PLAY / PAUSE'}; 'Next' {'NEXT TRACK'} }
+    try {
+        & $script:mediaSender ([LV01.MediaAction]$Action)
+        $script:mediaNotice='Media key sent. Windows chooses the player.'
+    } catch {
+        $script:mediaTitle='MEDIA UNAVAILABLE'
+        $script:mediaNotice='Windows did not accept the key. Check your player.'
+    }
+    # Media feedback must never change the power state or pause automatic operation.
+    $script:mediaTimer.Stop(); $script:mediaTimer.Start()
+    Refresh-DeviceDisplay
+}
+
+function Test-MediaButtons {
+    if (-not $isTest) { throw 'Media button tests require smoke/preview mode.' }
+    $priorState=$script:state; $priorDetail=$script:lastDetail; $priorPaused=$script:autoPaused; $priorSender=$script:mediaSender
+    try {
+        $script:mediaCommands.Clear()
+        foreach ($name in @('MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) {
+            $window.FindName($name).RaiseEvent([Windows.RoutedEventArgs]::new([Windows.Controls.Button]::ClickEvent))
+        }
+        if (($script:mediaCommands -join ',') -ne 'Previous,PlayPause,Next') { throw 'Media buttons sent the wrong commands.' }
+        if ($script:state -ne $priorState -or $script:autoPaused -ne $priorPaused) { throw 'Media controls changed power state.' }
+        Clear-MediaNotice
+        Set-DeviceHint 'MediaPlayPause'
+        if ($statusTitle.Text -ne 'PLAY / PAUSE') { throw 'Media hover hint missing.' }
+        Set-DeviceHint ''
+        $script:mediaSender={param($Action) throw 'Blocked test input'}
+        Invoke-DeviceMedia 'PlayPause'
+        if ($statusTitle.Text -ne 'MEDIA UNAVAILABLE' -or $script:state -ne $priorState) { throw 'Media failure changed power state or had no feedback.' }
+        Set-VisualState 'Warning' 'Power recovery required'
+        Invoke-DeviceMedia 'Next'
+        if ($statusTitle.Text -ne 'CHECK SETTINGS' -or $statusDetail.Text -ne 'Power recovery required') { throw 'Media feedback obscured power warning.' }
+        Clear-MediaNotice
+        Set-VisualState 'Off' 'Battery mode'
+        foreach ($name in @('MediaPreviousButton','MediaPlayPauseButton','MediaNextButton')) { if (-not $window.FindName($name).IsEnabled) { throw 'Media must work when Stay Awake is off.' } }
+    } finally {
+        $script:mediaSender=$priorSender; Clear-MediaNotice; Set-VisualState $priorState $priorDetail
+    }
 }

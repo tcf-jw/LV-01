@@ -13,7 +13,7 @@ Keep working with the lid closed while your laptop has AC power and Wi-Fi. Unplu
 
 **[Download LV-01 for Windows](https://github.com/tcf-jw/LV-01/releases)** · [MIT license](LICENSE)
 
-1. Download `LV-01-v0.1.0-windows-x64.zip` from Releases and extract it.
+1. Download `LV-01-v0.2.0-windows-x64.zip` from Releases and extract it.
 2. Open `LV-01.exe`. There is no installer or sign-in.
 3. Connect AC power and Wi-Fi. Wait for **AWAKE** before closing the lid.
 
@@ -26,12 +26,21 @@ Requires Windows 11 x64 with Windows PowerShell 5.1 and .NET Framework 4.8 or la
 | Control | What it does |
 | --- | --- |
 | **▶ / ■** | Start Stay Awake / turn it off and pause automatic starts. |
+| **⏮ / ⏯ / ⏭ MEDIA** | Previous, play/pause and next for the player Windows selects. |
 | **A / B / C** or **SCENE** | Choose the pixel cow, orbiting moons or synthetic waveforms. |
 | **✳ FX / Ⅱ FREEZE** | Play a scene effect / pause only the artwork. Power monitoring continues. |
 | **DISPLAY / TEMPO** | Adjust the device display brightness / animation speed. Drag, scroll or use arrow keys. Double-click resets. |
 | **☰ / ⓘ** | Choose light/dark, five accents and motion settings / open the quick guide. |
 
 Hover a control to see its meaning on the display. Keyboard focus works too. The clock and power/Wi-Fi/battery indicators reflect the laptop; the artwork is decorative. The miniature device icon comes in seven Windows sizes.
+
+## Music and video
+
+The three MEDIA keys send the same commands as keyboard media keys. Windows chooses the receiver, including compatible Spotify and browser/YouTube sessions. They work even when Stay Awake is off or the laptop is on battery.
+
+Previous/next means a track or playlist item, not a fixed number of seconds. A player may restart the current track, skip, or ignore an unsupported command. With no eligible player, nothing happens. Enable media-key support in your browser/player if needed. LV-01 confirms that the key was sent; it does not claim that a particular player accepted it or display a guessed playing state.
+
+Media-key delivery follows normal Windows input restrictions. The app does not request elevated access or change the selected player. Hover/focus explains the keys, and power-recovery warnings take priority over media feedback.
 
 ## Power behavior
 
@@ -71,7 +80,7 @@ The executable hosts the existing PowerShell/WPF interface in a Windows GUI proc
 powershell.exe -NoProfile -STA -File .\src\lid-vibe-ui.ps1 -StartPaused
 ```
 
-Run the safe logic suites with `tests/test-lid-vibe.ps1`, `tests/test-lid-vibe-auto.ps1` and `tests/test-lid-vibe-design.ps1`. They cover 46 transition, automation and preference checks. The EXE suite adds eight packaging checks plus WPF interaction/render checks. Tests never intentionally suspend the host or change its real power settings. GitHub Actions builds and tests on Windows.
+Run the safe logic suites with `tests/test-lid-vibe.ps1`, `tests/test-lid-vibe-auto.ps1`, `tests/test-lid-vibe-design.ps1` and `tests/test-media.ps1`. They cover 54 transition, automation, preference and media checks. The EXE suite adds eight packaging checks plus WPF interaction/render checks. Tests never intentionally suspend the host, change its real power settings or send media keys to running players. GitHub Actions builds and tests on Windows.
 
 For screenshots without touching power settings:
 
@@ -86,3 +95,5 @@ For screenshots without touching power settings:
 Copyright © 2026 Joel Wu. Code and original vector artwork are available under the [MIT license](LICENSE). You may use, modify and redistribute them, including commercially, while retaining the copyright and license notice. The software is provided without warranty.
 
 The visual reference is the [teenage engineering K.O. II](https://teenage.engineering/products/ep-133). LV-01 is an independent project with its own interface and artwork; it is not a teenage engineering product.
+
+Media controls follow Microsoft's [virtual-key definitions](https://learn.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes) and [SendInput contract](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput).

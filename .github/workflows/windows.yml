@@ -17,12 +17,14 @@ jobs:
           ./tests/test-lid-vibe.ps1
           ./tests/test-lid-vibe-auto.ps1
           ./tests/test-lid-vibe-design.ps1
+          ./tests/test-media.ps1
       - name: PowerShell 7 regression tests
         shell: pwsh
         run: |
           ./tests/test-lid-vibe.ps1
           ./tests/test-lid-vibe-auto.ps1
           ./tests/test-lid-vibe-design.ps1
+          ./tests/test-media.ps1
       - name: Build and test executable
         shell: powershell
         run: ./build.ps1 -Test

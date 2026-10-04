@@ -232,7 +232,7 @@ try {
         Set-VisualState 'Off' 'Auto starts on AC + Wi-Fi. Battery use stays normal.'
         if ($onButton.IsEnabled) { throw 'Stay Awake must be disabled when prerequisites are missing.' }
         if ([regex]::Matches($xaml, '<Button x:Name="(?:On|Off)Button"').Count -ne 2) { throw 'The panel must have exactly two power action buttons.' }
-        if ([regex]::Matches($xaml, '<Button\s').Count -ne 11) { throw 'Expected two power actions, five artwork keys, settings, help, minimize and close.' }
+        if ([regex]::Matches($xaml, '<Button\s').Count -ne 14) { throw 'Expected two power actions, five artwork keys, three media keys, settings, help, minimize and close.' }
         if (-not [Windows.Shell.WindowChrome]::GetWindowChrome($window)) { throw 'Native drag/system-menu chrome missing.' }
         Update-Telemetry
         $script:preferences.Theme = $PreviewTheme
@@ -290,6 +290,7 @@ try {
     if ($script:saveTimer) { $script:saveTimer.Stop() }
     if ($script:helpTimer) { $script:helpTimer.Stop() }
     if ($script:artTimer) { $script:artTimer.Stop() }
+    if ($script:mediaTimer) { $script:mediaTimer.Stop() }
     if ($script:designReady -and $ownsPanel) { Save-DevicePreferences }
     if ($script:settingsWindow) { $script:settingsWindow.Close() }
     if ($ownsPanel) { $panelMutex.ReleaseMutex() }

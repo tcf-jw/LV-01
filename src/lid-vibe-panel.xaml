@@ -182,8 +182,10 @@
       <Slider x:Name="SceneDial" Style="{StaticResource Dial}" Background="{DynamicResource OrangeKey}" Foreground="#FFF2D8" Canvas.Left="242" Canvas.Top="27" Minimum="0" Maximum="2" Value="0" SmallChange="1" LargeChange="1" IsSnapToTickEnabled="True" TickFrequency="1" AutomationProperties.Name="Scene selector"/>
       <TextBlock Text="TEMPO" Style="{StaticResource Print}" Canvas.Left="321" Canvas.Top="11"/>
       <Slider x:Name="TempoDial" Style="{StaticResource Dial}" Background="{DynamicResource BlackKey}" Foreground="#F0EAD7" Canvas.Left="316" Canvas.Top="27" Minimum="0.5" Maximum="1.5" Value="1" SmallChange="0.1" LargeChange="0.2" AutomationProperties.Name="Animation speed"/>
-      <Border BorderBrush="{DynamicResource SoftEdge}" BorderThickness="0,1,0,0" Width="122" Height="1" Canvas.Left="240" Canvas.Top="91"/>
-      <TextBlock Text="02 — VISUALS" Style="{StaticResource Print}" Canvas.Left="241" Canvas.Top="104"/>
+      <TextBlock Text="02 — MEDIA" Style="{StaticResource Print}" Canvas.Left="242" Canvas.Top="77"/>
+      <Button x:Name="MediaPreviousButton" Style="{StaticResource Pad}" Width="34" Height="34" Canvas.Left="240" Canvas.Top="93" Background="{DynamicResource IvoryKey}" BorderBrush="{DynamicResource ShellEdge}" AutomationProperties.Name="Previous media track" AutomationProperties.HelpText="Send the Windows previous-track key to its selected player."><Path Data="M 0,0 L 0,12 M 13,0 L 3,6 13,12 Z" Stroke="{DynamicResource LightKeyInk}" Fill="{DynamicResource LightKeyInk}" StrokeThickness="1.5"/></Button>
+      <Button x:Name="MediaPlayPauseButton" Style="{StaticResource Pad}" Width="46" Height="34" Canvas.Left="278" Canvas.Top="93" Background="{DynamicResource IvoryKey}" BorderBrush="{DynamicResource ShellEdge}" AutomationProperties.Name="Play or pause media" AutomationProperties.HelpText="Send the Windows play-pause key to its selected player."><Path Data="M 0,0 L 8,6 0,12 Z M 13,0 L 15,0 15,12 13,12 Z M 18,0 L 20,0 20,12 18,12 Z" Fill="{DynamicResource LightKeyInk}"/></Button>
+      <Button x:Name="MediaNextButton" Style="{StaticResource Pad}" Width="34" Height="34" Canvas.Left="328" Canvas.Top="93" Background="{DynamicResource IvoryKey}" BorderBrush="{DynamicResource ShellEdge}" AutomationProperties.Name="Next media track" AutomationProperties.HelpText="Send the Windows next-track key to its selected player."><Path Data="M 0,0 L 10,6 0,12 Z M 13,0 L 13,12" Stroke="{DynamicResource LightKeyInk}" Fill="{DynamicResource LightKeyInk}" StrokeThickness="1.5"/></Button>
       <TextBlock Text="A" Style="{StaticResource Print}" Canvas.Left="84" Canvas.Top="142"/>
       <TextBlock Text="B" Style="{StaticResource Print}" Canvas.Left="164" Canvas.Top="142"/>
       <TextBlock Text="C" Style="{StaticResource Print}" Canvas.Left="244" Canvas.Top="142"/>
@@ -203,6 +205,7 @@
     <TextBlock Text="▶  Stay Awake.  ■  Turn Off and pause auto." FontSize="11" Margin="0,0,0,6"/>
     <TextBlock Text="AC + Wi-Fi starts automatically in 5–10 seconds. Unplug or lose Wi-Fi: normal Windows behavior." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="A / B / C selects artwork. Turn SCENE or TEMPO; ✳ plays an effect. Ⅱ freezes only the artwork." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+    <TextBlock Text="MEDIA keys: previous, play/pause, next. Windows chooses the player, as with keyboard media keys." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="Dials: drag, scroll or use arrow keys. Double-click resets. Minimize keeps running; close turns off." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,9"/>
     <TextBlock Text="Before packing: use Windows Shut down." FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap"/>
    </StackPanel>

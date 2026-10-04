@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 — 2026-10-04
+
+- Added previous, play/pause and next media keys beneath the scene and tempo dials.
+- Windows chooses the receiving player, as with keyboard media keys. Controls work on battery and while Stay Awake is off.
+- Added hover explanations and brief send/failure feedback; power warnings stay visible.
+- Added eight native-boundary tests and WPF checks without sending commands to running players.
+- Updated the miniature icon, previews and packaged executable.
+
 ## 0.1.0 — 2026-10-04
 
 First shareable Windows release of LV-01, previously developed as Lid Vibe.
