@@ -84,6 +84,12 @@ function Apply-DevicePalette {
         $script:settingsWindow.FindName('MotionChoice').Foreground = $window.Resources['Ink']
         $script:settingsWindow.FindName('Done').Foreground = $window.Resources['Ink']
     }
+    if ($script:fixWindow) {
+        $script:fixWindow.Background = $window.Resources['Casing']
+        $script:fixWindow.Content.Background = $window.Resources['Casing']
+        $script:fixWindow.Foreground = $window.Resources['Ink']
+        $script:fixWindow.FindName('FixDone').Foreground = $window.Resources['Ink']
+    }
     Refresh-ArtKeys
     if ($script:state -eq 'On') { $statusDot.Fill = $window.Resources['AccentLight'] }
 }
@@ -301,6 +307,7 @@ function Initialize-DeviceDesign {
     Initialize-DeviceArt
     Initialize-MediaKeys
     Initialize-DeviceVolume
+    Initialize-DeviceFix
     $script:designReady = $true
 }
 
@@ -384,6 +391,7 @@ function Test-DeviceDesign {
         if ($window.Resources['IvoryKey'].GradientStops[0].Color.ToString() -ne '#FF69726B' -or $window.Resources['Grille'].Drawing.Children[0].Brush.Color.ToString() -ne '#FF171D19') { throw 'Dark key/grille material failed.' }
         Test-MediaButtons
         Test-VolumeSlider
+        Test-DeviceFix
         $script:designChecksPassed=$true
         'Design interactions: OK (hover, warnings, guide, dials, keyboard, wheel, themes, accents, motion)'
     } finally {

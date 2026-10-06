@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 - 2026-10-06
+
+- Added a wrench key in the title bar that opens a FIX window.
+- Restart Search, the Start menu, the taskbar and File Explorer, notifications or the emoji keyboard. Windows relaunches them; LV-01 starts the taskbar itself if it stays gone.
+- Lists your eight busiest apps with CPU and memory, hung apps first. End closes politely, then ends what is left after three seconds; Restart also reopens the program. Both ask for a second click.
+- System and administrator processes are never listed or ended. Fix actions never change Stay Awake or power settings.
+- Added 21 FIX checks, including a live test against throwaway processes, plus WPF interaction checks.
+
 ## 0.3.0 — 2026-10-04
 
 - Added a physical-style VOL fader beneath the media keys, with keyboard and scroll controls.

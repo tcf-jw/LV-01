@@ -28,7 +28,7 @@ try {
     $icon=[IO.File]::ReadAllBytes((Join-Path $appRoot 'lid-vibe.ico'))
     Assert ([BitConverter]::ToUInt16($icon,4) -eq 7) 'miniature device icon has seven Windows sizes'
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $zip=[IO.Compression.ZipFile]::OpenRead((Join-Path $root 'dist\LV-01-v0.3.0-windows-x64.zip'))
+    $zip=[IO.Compression.ZipFile]::OpenRead((Join-Path $root 'dist\LV-01-v0.4.0-windows-x64.zip'))
     try { $names=@($zip.Entries | ForEach-Object {$_.FullName} | Sort-Object); Assert (($names -join ',') -eq 'LICENSE,LV-01.exe,START-HERE.txt') 'shareable zip contains only the app, license and guide' } finally {$zip.Dispose()}
     '8 package checks passed; no real power changes.'
 } finally {

@@ -129,6 +129,7 @@
        <TextBlock Text="  /  LID VIBE" Style="{StaticResource Print}" VerticalAlignment="Center"/>
       </StackPanel>
       <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+       <Button x:Name="FixButton" Style="{StaticResource WindowKey}" shell:WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.Name="Fix stuck Windows parts and apps" ToolTip="Restart stuck Search, Start or taskbar; end or restart an app"><Path Data="M 1,9 L 4.5,5.5 M 4.2,5.8 A 3.2,3.2 0 0 1 7.9,1.2 L 6.3,2.8 L 7.2,3.7 L 8.8,2.1 A 3.2,3.2 0 0 1 4.2,5.8 Z" Stroke="{DynamicResource MutedInk}" StrokeThickness="1.2" StrokeLineJoin="Round"/></Button>
        <Button x:Name="SettingsButton" Style="{StaticResource WindowKey}" shell:WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.Name="Appearance settings" ToolTip="Casing, accent and motion"><Path Data="M 0,0 L 9,0 M 0,3.5 L 9,3.5 M 0,7 L 9,7" Stroke="{DynamicResource MutedInk}" StrokeThickness="1.2"/></Button>
        <Button x:Name="MinimizeButton" Style="{StaticResource WindowKey}" shell:WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.Name="Minimize" ToolTip="Minimize; Stay Awake keeps running"><Path Data="M 0,4 L 9,4" Stroke="{DynamicResource MutedInk}" StrokeThickness="1.2"/></Button>
        <Button x:Name="CloseButton" Style="{StaticResource WindowKey}" shell:WindowChrome.IsHitTestVisibleInChrome="True" AutomationProperties.Name="Close" ToolTip="Close and restore Windows settings"><Path Data="M 0,0 L 7,7 M 7,0 L 0,7" Stroke="{DynamicResource MutedInk}" StrokeThickness="1.2"/></Button>
@@ -231,6 +232,7 @@
     <TextBlock Text="AC + Wi-Fi starts automatically in 5–10 seconds. Unplug or lose Wi-Fi: normal Windows behavior." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="A / B / C selects artwork. Turn SCENE or TEMPO; ✳ plays an effect. Ⅱ freezes only the artwork." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="MEDIA: previous, play/pause, next. Windows chooses the player. VOL sets main output volume; mute stays unchanged." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+    <TextBlock Text="Wrench key: restart a stuck Search, Start menu or taskbar, or end and restart an app." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
     <TextBlock Text="Dials: drag, scroll or use arrow keys. Double-click resets. Minimize keeps running; close turns off." FontSize="11" TextWrapping="Wrap" Margin="0,0,0,9"/>
     <TextBlock Text="Before packing: use Windows Shut down." FontSize="11" FontWeight="SemiBold" TextWrapping="Wrap"/>
    </StackPanel>

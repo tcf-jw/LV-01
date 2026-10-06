@@ -13,7 +13,7 @@ Keep working with the lid closed while your laptop has AC power and Wi-Fi. Unplu
 
 **[Download LV-01 for Windows](https://github.com/tcf-jw/LV-01/releases)** · [MIT license](LICENSE)
 
-1. Download `LV-01-v0.3.0-windows-x64.zip` from Releases and extract it.
+1. Download `LV-01-v0.4.0-windows-x64.zip` from Releases and extract it.
 2. Open `LV-01.exe`. There is no installer or sign-in.
 3. Connect AC power and Wi-Fi. Wait for **AWAKE** before closing the lid.
 
@@ -31,6 +31,7 @@ Requires Windows 11 x64 with Windows PowerShell 5.1 and .NET Framework 4.8 or la
 | **A / B / C** or **SCENE** | Choose the pixel cow, orbiting moons or synthetic waveforms. |
 | **✳ FX / Ⅱ FREEZE** | Play a scene effect / pause only the artwork. Power monitoring continues. |
 | **DISPLAY / TEMPO** | Adjust the device display brightness / animation speed. Drag, scroll or use arrow keys. Double-click resets. |
+| **Wrench** | Open FIX: restart a stuck Search, Start menu or taskbar, or end or restart one of your apps. |
 | **☰ / ⓘ** | Choose light/dark, five accents and motion settings / open the quick guide. |
 
 Hover a control to see its meaning on the display. Keyboard focus works too. The clock and power/Wi-Fi/battery indicators reflect the laptop; the artwork is decorative. The miniature device icon comes in seven Windows sizes.
@@ -46,6 +47,16 @@ Media-key delivery follows normal Windows input restrictions. The app does not r
 The VOL fader controls the default Windows output, including other apps using that output. It follows keyboard volume changes and output-device switches within about one second. It shows **MUTE** when Windows has muted the output; moving VOL leaves mute on. Unmute using Windows or your keyboard. Apps routed to a different output have their own volume.
 
 Opening or closing LV-01 never resets volume. If the output disconnects, VOL dims and retries automatically. The fader also works on battery and with Stay Awake off.
+
+## Fix stuck things
+
+The wrench key in the title bar opens a FIX window with two lists.
+
+The top list restarts Search, the Start menu, the taskbar and File Explorer, notifications, or the emoji and touch keyboard. Windows relaunches each of these by itself, so nothing is lost. Restarting Explorer closes any open folder windows, so that button asks for a second click. If Windows has not brought the taskbar back after three seconds, LV-01 starts it.
+
+The bottom list shows your eight busiest apps, grouped by program, with CPU and memory use. Apps that Windows marks as not responding come first, in red. **End** asks the app to close, waits three seconds, then ends whatever is still running; hung and windowless apps are ended straight away. **Restart** does the same, then opens the program again without its original command-line arguments. Both buttons ask for a second click, and any unsaved work in that app is lost.
+
+The list only includes programs outside the Windows folder that run in your own sign-in, and LV-01 never lists or ends itself. Without administrator rights, Windows hides system processes from LV-01, so you can't end one by accident. An app running as administrator shows NEEDS ADMIN instead. Some Microsoft Store apps refuse to start from their program file; LV-01 then reports the app as ended and asks you to reopen it from Start. The list refreshes every three seconds while the window is open.
 
 ## Power behavior
 
@@ -85,7 +96,7 @@ The executable hosts the existing PowerShell/WPF interface in a Windows GUI proc
 powershell.exe -NoProfile -STA -File .\src\lid-vibe-ui.ps1 -StartPaused
 ```
 
-Run the safe logic suites with `tests/test-lid-vibe.ps1`, `tests/test-lid-vibe-auto.ps1`, `tests/test-lid-vibe-design.ps1`, `tests/test-media.ps1` and `tests/test-volume.ps1`. They cover 60 transition, automation, preference and media/volume checks. The EXE suite adds eight packaging checks plus WPF interaction/render checks. Tests never intentionally suspend the host, change its real power or volume settings, or send media keys to running players. GitHub Actions builds and tests on Windows.
+Run the safe logic suites with `tests/test-lid-vibe.ps1`, `tests/test-lid-vibe-auto.ps1`, `tests/test-lid-vibe-design.ps1`, `tests/test-media.ps1`, `tests/test-volume.ps1` and `tests/test-fix.ps1`. They cover 81 transition, automation, preference, media/volume and FIX checks. The EXE suite adds eight packaging checks plus WPF interaction/render checks. Tests never intentionally suspend the host, change its real power or volume settings, send media keys to running players, or end any process except throwaway copies the FIX test starts itself. GitHub Actions builds and tests on Windows.
 
 For screenshots without touching power settings:
 

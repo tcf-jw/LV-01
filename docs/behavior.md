@@ -58,3 +58,18 @@ The executable stores these in `%LOCALAPPDATA%\LV-01`:
 The internal filenames retain the original project name for compatibility. Running the source scripts directly keeps these files beside the scripts unless `LV01_DATA_DIR` is explicitly set. The app and original Lid Vibe scripts share per-user mutex names so they cannot run duplicate panels or workers. Close the older version before opening the EXE.
 
 If restoration is denied, the app keeps its journal and shows a warning. Use Turn Off to retry. If it remains blocked, check the lid action in Windows power settings. Do not clear the recovery file merely to dismiss a warning.
+
+## FIX window behavior
+
+FIX actions never change Stay Awake, automatic pausing or power settings. Their result shows on the display for two seconds, and power warnings keep priority.
+
+| State 1 | State 2 | Result |
+|---|---|---|
+| Search, Start menu, notifications or keyboard running | Click Restart | The process ends and Windows relaunches it when needed. If it was not running, nothing changes. |
+| Taskbar running | Click Restart, then Sure? | Explorer ends. If no new Explorer appears within three seconds, LV-01 starts one. Open folder windows close. |
+| App responding, with a window | Click End, then Sure? | Its windows get a close request. After three seconds, any remaining processes of that program are ended. |
+| App not responding, or with no window | Click End or Restart, then Sure? | All its processes end immediately. |
+| App ended by Restart | Relaunch | The same program file starts with no arguments. If Windows refuses, the display says to reopen it from Start. |
+| App running as administrator | Click End or Restart | Shows NEEDS ADMIN. Nothing is ended. |
+
+Only programs outside the Windows folder in your own sign-in session are listed, grouped by program file. LV-01 never lists or ends itself. Ending an app loses its unsaved work.

@@ -1,4 +1,4 @@
-﻿param([switch]$ValidateOnly, [switch]$SmokeTest, [switch]$StartPaused, [string]$PreviewPath = '', [ValidateSet('Off','On','Warning')][string]$PreviewState = 'Off', [ValidateSet('Light','Dark')][string]$PreviewTheme = 'Light', [ValidateSet('Orange','Cobalt','Mint','Red','Lilac')][string]$PreviewAccent = 'Orange', [ValidateSet('Device','Guide','Hover','Settings')][string]$PreviewView = 'Device', [ValidateRange(0,2)][int]$PreviewScene = 0, [switch]$PreviewEffect, [ValidateSet(1,2)][int]$PreviewScale = 2)
+﻿param([switch]$ValidateOnly, [switch]$SmokeTest, [switch]$StartPaused, [string]$PreviewPath = '', [ValidateSet('Off','On','Warning')][string]$PreviewState = 'Off', [ValidateSet('Light','Dark')][string]$PreviewTheme = 'Light', [ValidateSet('Orange','Cobalt','Mint','Red','Lilac')][string]$PreviewAccent = 'Orange', [ValidateSet('Device','Guide','Hover','Settings','Fix')][string]$PreviewView = 'Device', [ValidateRange(0,2)][int]$PreviewScene = 0, [switch]$PreviewEffect, [ValidateSet(1,2)][int]$PreviewScale = 2)
 
 $ErrorActionPreference = 'Stop'
 $coreScript = Join-Path $PSScriptRoot 'lid-vibe.ps1'
@@ -21,6 +21,7 @@ $script:lightState = ''
 $script:autoPaused = [bool]$StartPaused; $script:autoFaulted = $false; $script:readySamples = 0
 $isTest = $SmokeTest -or [bool]$PreviewPath
 . (Join-Path $PSScriptRoot 'lid-vibe-design.ps1')
+. (Join-Path $PSScriptRoot 'lid-vibe-fix.ps1')
 
 function Invoke-AutoCheck {
     param([bool]$Eligible)
@@ -232,7 +233,7 @@ try {
         Set-VisualState 'Off' 'Auto starts on AC + Wi-Fi. Battery use stays normal.'
         if ($onButton.IsEnabled) { throw 'Stay Awake must be disabled when prerequisites are missing.' }
         if ([regex]::Matches($xaml, '<Button x:Name="(?:On|Off)Button"').Count -ne 2) { throw 'The panel must have exactly two power action buttons.' }
-        if ([regex]::Matches($xaml, '<Button\s').Count -ne 14) { throw 'Expected two power actions, five artwork keys, three media keys, settings, help, minimize and close.' }
+        if ([regex]::Matches($xaml, '<Button\s').Count -ne 15) { throw 'Expected two power actions, five artwork keys, three media keys, fix, settings, help, minimize and close.' }
         if (-not [Windows.Shell.WindowChrome]::GetWindowChrome($window)) { throw 'Native drag/system-menu chrome missing.' }
         Update-Telemetry
         $script:preferences.Theme = $PreviewTheme
@@ -258,6 +259,7 @@ try {
             if ($PreviewView -eq 'Guide') { Set-HelpVisible $true }
             if ($PreviewView -eq 'Hover') { Set-DeviceHint 'Off' }
             if ($PreviewView -eq 'Settings') { Show-DeviceSettings; $script:settingsWindow.UpdateLayout() }
+            if ($PreviewView -eq 'Fix') { Show-DeviceFix; $script:fixTimer.Stop(); $script:fixWindow.UpdateLayout() }
             Set-ArtScene $PreviewScene
             if ($PreviewEffect) { $script:art.Trigger(); $script:art.Advance(0.12,1) }
             Invoke-ArtFrame 0
@@ -268,7 +270,7 @@ try {
             $window.FindName('HelpPanel').Opacity=1
             $window.UpdateLayout()
             if ($PreviewPath) {
-                $surface = if ($PreviewView -eq 'Settings') { $script:settingsWindow.Content } else { $window.Content }
+                $surface = if ($PreviewView -eq 'Settings') { $script:settingsWindow.Content } elseif ($PreviewView -eq 'Fix') { $script:fixWindow.Content } else { $window.Content }
                 $bitmap = [Windows.Media.Imaging.RenderTargetBitmap]::new([int]($surface.ActualWidth * $PreviewScale), [int]($surface.ActualHeight * $PreviewScale), (96*$PreviewScale), (96*$PreviewScale), [Windows.Media.PixelFormats]::Pbgra32)
                 $bitmap.Render($surface)
                 $encoder = [Windows.Media.Imaging.PngBitmapEncoder]::new()
@@ -294,6 +296,7 @@ try {
     if ($script:mediaTimer) { $script:mediaTimer.Stop() }
     if ($script:designReady -and $ownsPanel) { Save-DevicePreferences }
     if ($script:settingsWindow) { $script:settingsWindow.Close() }
+    if ($script:fixWindow) { $script:fixWindow.Close() }
     if ($ownsPanel) { $panelMutex.ReleaseMutex() }
     if ($panelMutex) { $panelMutex.Dispose() }
 }
